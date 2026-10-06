@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Graphics &amp; Commercial Art – 50-Item Quiz</title>
+<style>
+:root{--bg:#faf8f5;--fg:#222;--mut:#6b6b6b;--card:#fff;--bd:#ddd;--ac:#e8742c;--ok:#2e8b57;--okb:#e3f4ea;--no:#c0392b;--nob:#fbe9e7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1b1d;--fg:#eee;--mut:#a0a0a0;--card:#262628;--bd:#3a3a3d;--okb:#1d3a2a;--nob:#432522}}
+:root[data-theme="dark"]{--bg:#1b1b1d;--fg:#eee;--mut:#a0a0a0;--card:#262628;--bd:#3a3a3d;--okb:#1d3a2a;--nob:#432522}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.3rem;margin:0 0 4px;color:var(--ac)}
+.sub{color:var(--mut);margin:0 0 16px;font-size:.9rem}
+.bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
+.meta{display:flex;justify-content:space-between;color:var(--mut);font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-top:14px}
+.q{font-size:1.1rem;font-weight:600;margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:8px 0;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ac)}
+.opt.ok{background:var(--okb);border-color:var(--ok)}
+.opt.no{background:var(--nob);border-color:var(--no)}
+.opt:disabled{cursor:default}
+.fb{margin-top:10px;font-weight:600}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer;margin-top:14px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--bd);margin-left:8px}
+.big{font-size:2.4rem;font-weight:700;color:var(--ac);margin:0}
+.rev{border-top:1px solid var(--bd);padding:10px 0;font-size:.92rem}
+.rev b{color:var(--no)}.rev span{color:var(--ok)}
+</style>
+</head>
+<body>
+<main>
+<h1>Digital Graphics &amp; Commercial Art</h1>
+<p class="sub">50-item quiz · Units 1–2 · Graphic design careers and theory</p>
+<div id="app"></div>
+</main>
+<script>
+// Format: [question, CORRECT answer, wrong1, wrong2, wrong3]  (options are shuffled at runtime)
+const Q=[
+["Graphic design is best described in Unit 1 as…","A problem-solving discipline that turns creative vision into functional visual solutions","A purely decorative art form","A software skill only","A branch of advertising only"],
+["Which is listed as a CON of being a graphic designer?","High-paying agency roles are concentrated in major cities","Little room for career progression","No need to learn software","Almost no client interaction"],
+["Which is a listed PRO of graphic design?","Multi-disciplinary flexibility (illustration, photography, 3D, etc.)","Fixed 9-to-5 hours","Guaranteed creative autonomy","No tight deadlines"],
+["A typical career trajectory in the module is…","Junior → Senior Designer → Art Director → Creative Director","Creative Director → Junior → Art Director","Junior → Printer → Client","Freelancer → Junior only"],
+["Which is a PSYCHOLOGICAL skill rather than a practical skill?","Objectivity","Software proficiency","Time management","Drawing and sketching"],
+["Why should projects begin on paper?","Rough sketches externalize ideas quickly and rule out unworkable concepts early","Software cannot be used before sketching","Clients only accept hand-drawn work","Paper is cheaper than screens"],
+["Being objective means…","Personal taste is secondary to answering the brief","Always following your own taste","Ignoring client goals","Avoiding all feedback"],
+["“It is better to be criticized than ignored” relates to which skill?","Receiving criticism","Time management","Software proficiency","Patience"],
+["Creative discipline and judgment involves…","Simplifying overly busy concepts to fit budgets, deadlines or balance","Adding more elements to impress","Avoiding editing","Copying trends"],
+["Why are verbal skills important for a visual profession?","You must pitch, defend and sell your ideas to clients and teams","Designs are never shown visually","Clients cannot read","Only seniors present work"],
+["The core definition of graphic design is the…","Organisation and presentation of information through a creative process for a particular function","Use of software to make art","Printing of text on paper","Decoration of layouts"],
+["Which is a use of line with type?","Emphasizing or dividing a word, phrase or paragraph","Changing a font’s anatomy","Replacing the baseline","Removing hierarchy"],
+["Must a line always be a solid stroke?","No – it can also be created by contrast of colour or shape","Yes, always","Only in infographics","Only in print"],
+["Two stroke lines (thick and thin) forming a border gave the example which feel?","Boutique","Industrial","Chaotic","Playful"],
+["The colour wheel model used in the module is…","RYB, 12 colours","RGB, 6 colours","CMYK, 4 colours","HSL, 24 colours"],
+["Secondary colours (RYB) are…","Green, orange and purple","Red, yellow and blue","Pink, brown and grey","Black, white and grey"],
+["Tertiary colours are made by mixing…","A primary with a neighbouring secondary colour","Two primaries","Black and white","Two secondaries"],
+["Complementary colour schemes are known for…","High contrast and vibrant results","Being the most subtle","Using one hue only","Using neighbouring colours"],
+["Monochromatic schemes use…","Shades and tints of the same colour","Opposite colours","Three evenly spaced colours","Neighbouring hues"],
+["In design, shapes have…","Two dimensions: height and width","Three dimensions","Only colour","Only depth"],
+["Geometric shapes tend to evoke…","Order, structure, control and symmetry","Spontaneity and fluidity","A human, freehand feel","Natural randomness"],
+["Organic shapes tend to evoke…","A natural, spontaneous, fluid, human feel","Order and sterility","Rigid control","Mechanical precision"],
+["The two key types of texture are…","Image textures and pattern textures","Rough and smooth","Digital and print","Warm and cool"],
+["Zebra stripes, fur and feathers are examples of which texture category?","Biological","Environmental","Man-made","Abstract"],
+["Negative space is…","The unused area surrounding or between positive elements","The main subject of the page","Only black areas","A mistake in layout"],
+["Which is NOT a technique for creating depth listed in the module?","Kerning","Overlap","Opacity","Light and shadow"],
+["When shapes overlap, the top shapes appear…","Closer to the viewer","Further away","Transparent","Less important"],
+["‘Form’ is best described as…","The 3D equivalent of shape, with height, width and depth","A flat outline","A colour scheme","A grid"],
+["Form is defined by…","Shadows on surfaces, enhanced by tone, texture and colour","Thin outlines only","Typefaces","Margins"],
+["The part of a letter that extends below the baseline is the…","Descender","Cap height","Bowl","X-height"],
+["Which is NOT one of the listed typeface categories?","Monospace","Slab Serif","Blackletter","Rounded"],
+["Typefaces are compared to…","Human voices with distinct accents and dialects","Musical instruments","Colour palettes","Grid systems"],
+["Type communicates on which two levels?","Literally (the text) and visually (tone, emotion, character)","Size and colour","Print and digital","Serif and sans serif"],
+["Contrast occurs when…","Two or more visual elements in a composition are different","Elements are identical","Everything is aligned","Only colour is used"],
+["Without context, an isolated object (e.g., a single circle)…","Carries minimal meaning on its own","Always signals importance","Creates hierarchy","Defines the brand"],
+["Road signs use bold colour contrast to…","Communicate warnings instantly without text","Decorate the road","Reduce visibility","Show brand identity"],
+["Visual hierarchy is mainly created through…","Contrast","Repetition","Texture only","Random placement"],
+["On a corporate letterhead, the logo typically sits…","Top left","Bottom centre","Middle of the body text","Hidden in the footer"],
+["The two alignment types are…","Edge alignment and centre alignment","Left and bold","Vertical and diagonal only","Grid and free"],
+["Unintentional misalignment tends to…","Look arbitrary and devalue the work","Add intentional energy","Improve hierarchy","Create radial balance"],
+["The three types of balance are…","Symmetrical, asymmetrical and radial","Formal, bold and light","Horizontal, vertical and diagonal","Warm, cool and neutral"],
+["Asymmetrical balance is achieved when…","A large element is counterbalanced by smaller or more distant ones","Both sides mirror each other","Elements radiate from a centre","All elements are equal"],
+["Placing elements farther apart signals…","There is no relationship between them","They are the same group","Higher hierarchy","Stronger balance"],
+["Moving three shapes slightly apart can…","Destroy the new shape formed by negative space","Always strengthen the message","Create radial balance","Make them repeat"],
+["Repetition differs from pattern in that repetition is…","A structural design choice, while pattern relates to visual style","Only used for gift wrap","A type of texture","Always decorative"],
+["‘Visual brainwashing’ refers to the idea that…","The more an audience sees an element, the more familiar it becomes","Designs should confuse viewers","Colour should be avoided","Logos should change often"],
+["What differentiates professional from amateur designers regarding simplicity?","Knowing how to edit back with discipline","Adding as many elements as possible","Avoiding negative space","Using more colours"],
+["The most effective logos are generally…","Simple and clean","Complex and detailed","Busy with many colours","Heavily textured"],
+["Which is NOT one of the three core components of a good design brief?","Budget approval","Overview","Requirements","Intended outcome"],
+["The professional rule about form and function is…","Form follows function","Function follows form","Form is always first","They are unrelated"]
+];
+
+const app=document.getElementById('app');
+let order,i,score,missed,answered;
+
+function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]];}return a;}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+function start(){order=shuffle(Q.map((_,n)=>n));i=0;score=0;missed=[];show();}
+
+function show(){
+  const q=Q[order[i]],opts=shuffle(q.slice(1));answered=false;
+  app.innerHTML=`<div class="meta"><span>Question ${i+1} of ${Q.length}</span><span>Score: ${score}</span></div>
+  <div class="bar"><i style="width:${i/Q.length*100}%"></i></div>
+  <div class="card"><p class="q">${esc(q[0])}</p><div id="o"></div><div class="fb" id="fb"></div><div id="nx"></div></div>`;
+  const o=document.getElementById('o');
+  opts.forEach(t=>{const b=document.createElement('button');b.className='opt';b.textContent=t;b.onclick=()=>pick(b,t,q);o.appendChild(b);});
+}
+
+function pick(btn,t,q){
+  if(answered)return;answered=true;
+  const good=t===q[1];
+  if(good){score++;btn.classList.add('ok');}
+  else{btn.classList.add('no');missed.push({q:q[0],you:t,ans:q[1]});}
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent===q[1])b.classList.add('ok');});
+  const fb=document.getElementById('fb');
+  fb.textContent=good?'✓ Correct!':'✗ Not quite — the correct answer is highlighted.';
+  fb.style.color=good?'var(--ok)':'var(--no)';
+  const last=i===Q.length-1;
+  document.getElementById('nx').innerHTML=`<button class="btn" id="nb">${last?'See results':'Next question →'}</button>`;
+  document.getElementById('nb').onclick=()=>{if(last)end();else{i++;show();}};
+}
+
+function end(){
+  const pct=Math.round(score/Q.length*100);
+  const msg=pct>=90?'Outstanding!':pct>=75?'Great work!':pct>=60?'Good effort — review the missed items.':'Keep studying — you’ll get there!';
+  app.innerHTML=`<div class="card"><p class="big">${score} / ${Q.length} (${pct}%)</p><p>${msg}</p>
+  <button class="btn" id="re">Retake (shuffled)</button>
+  ${missed.length?'<button class="btn alt" id="rm">Retry missed only</button>':''}
+  ${missed.length?`<h3>Review: ${missed.length} missed</h3>`+missed.map(m=>`<div class="rev">${esc(m.q)}<br><b>Your answer: ${esc(m.you)}</b><br><span>Correct: ${esc(m.ans)}</span></div>`).join(''):'<p>Perfect score — nothing to review!</p>'}</div>`;
+  document.getElementById('re').onclick=start;
+  const rm=document.getElementById('rm');
+  if(rm)rm.onclick=()=>{const set=new Set(missed.map(m=>m.q));order=shuffle(Q.map((_,n)=>n).filter(n=>set.has(Q[n][0])));i=0;score=0;missed=[];
+    const total=order.length;Q.length;show2(total);};
+}
+// Retry-missed uses a shorter run
+function show2(){retryMode=true;showRetry();}
+let retryMode=false;
+function showRetry(){
+  const n=order.length;
+  function render(){
+    const q=Q[order[i]],opts=shuffle(q.slice(1));answered=false;
+    app.innerHTML=`<div class="meta"><span>Retry ${i+1} of ${n}</span><span>Score: ${score}</span></div>
+    <div class="bar"><i style="width:${i/n*100}%"></i></div>
+    <div class="card"><p class="q">${esc(q[0])}</p><div id="o"></div><div class="fb" id="fb"></div><div id="nx"></div></div>`;
+    const o=document.getElementById('o');
+    opts.forEach(t=>{const b=document.createElement('button');b.className='opt';b.textContent=t;
+      b.onclick=()=>{if(answered)return;answered=true;const good=t===q[1];
+        if(good){score++;b.classList.add('ok');}else{b.classList.add('no');missed.push({q:q[0],you:t,ans:q[1]});}
+        document.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.textContent===q[1])x.classList.add('ok');});
+        const fb=document.getElementById('fb');fb.textContent=good?'✓ Correct!':'✗ Not quite — the correct answer is highlighted.';fb.style.color=good?'var(--ok)':'var(--no)';
+        const last=i===n-1;document.getElementById('nx').innerHTML=`<button class="btn" id="nb">${last?'See results':'Next question →'}</button>`;
+        document.getElementById('nb').onclick=()=>{if(last){retryEnd(n);}else{i++;render();}};};
+      o.appendChild(b);});
+  }
+  render();
+}
+function retryEnd(n){
+  app.innerHTML=`<div class="card"><p class="big">${score} / ${n}</p><p>${missed.length?'Some are still tricky — try again!':'You’ve mastered all the ones you missed!'}</p>
+  <button class="btn" id="re">Full 50-item quiz</button>${missed.length?'<button class="btn alt" id="rm">Retry missed again</button>':''}</div>`;
+  document.getElementById('re').onclick=start;
+  const rm=document.getElementById('rm');
+  if(rm)rm.onclick=()=>{const set=new Set(missed.map(m=>m.q));order=shuffle(Q.map((_,k)=>k).filter(k=>set.has(Q[k][0])));i=0;score=0;missed=[];showRetry();};
+}
+start();
+</script>
+</body>
+</html>
